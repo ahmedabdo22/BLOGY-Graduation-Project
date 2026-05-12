@@ -1,0 +1,38 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+{% include 'includes/head.html' %}
+<body>
+
+<!-- ══════════════ NAVBAR ══════════════ -->
+{% include 'includes/navbar.html' %}
+
+
+<!-- ══════════════ MESSAGES ══════════════ -->
+{% include 'includes/messages.html' %}
+
+<!-- ══════════════ PAGE HEADER ══════════════ -->
+{% block page_header %}{% endblock %}
+
+<!-- ══════════════ BODY ══════════════ -->
+<div class="page-body">
+
+  {% if user.is_authenticated %}
+  <!-- SIDEBAR -->
+{% include 'includes/siderbar.html' %}
+  {% endif %}
+
+  <!-- MAIN -->
+  <main class="main-content">
+    {% block content %}{% endblock %}
+  </main>
+</div>
+
+<!-- ══════════════ FOOTER ══════════════ -->
+{% include 'includes/footer.html' %}
+
+
+<script src="{% static 'js/main.js' %}"></script>
+{% block extra_js %}{% endblock %}
+</body>
+</html>

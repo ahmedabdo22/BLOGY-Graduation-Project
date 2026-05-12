@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container py-4">
+  <h1>Moderation Dashboard</h1>
+  {% for report in reports %}
+    <div class="border p-2 mb-2">
+      <strong>{{ report.article.title }}</strong>
+      <p>{{ report.reason }}</p>
+      <p>Status: {{ report.status }}</p>
+    </div>
+  {% empty %}
+    <p>No reports.</p>
+  {% endfor %}
+</div>
+{% endblock %}

@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="container py-4">
+  <h1>BLOGY Articles</h1>
+  <form method="get" class="mb-4">
+    <input type="text" name="q" value="{{ query }}" placeholder="Search articles..." class="form-control">
+  </form>
+  <div class="row">
+    {% for article in articles %}
+      <div class="col-md-6 mb-3">
+        <div class="card p-3">
+          <h3><a href="{{ article.get_absolute_url }}">{{ article.title }}</a></h3>
+          <p>By <a href="{% url 'accounts:public_profile' article.author.username %}">{{ article.author.username }}</a></p>
+          <p>{{ article.content|truncatewords:25 }}</p>
+        </div>
+      </div>
+    {% empty %}
+      <p>No articles found.</p>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

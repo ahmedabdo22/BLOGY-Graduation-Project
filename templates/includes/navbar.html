@@ -1,0 +1,20 @@
+<nav class="navbar">
+  <a href="{% url 'core:home' %}" class="brand">
+    BLOGY<span></span>
+  </a>
+
+  <div class="nav-links">
+    <a href="{% url 'core:home' %}">Home</a>
+    <a href="{% url 'articles:list' %}">Articles</a>
+
+    {% if user.is_authenticated %}
+      <a href="{% url 'articles:create' %}">Create Article</a>
+      <a href="{% url 'dashboard:author_dashboard' %}">Dashboard</a>
+      <a href="{% url 'accounts:profile' %}">Profile({{ request.user.username }})</a>
+      <a href="{% url 'accounts:logout' %}">Logout</a>
+    {% else %}
+      <a href="{% url 'accounts:login_view' %}">Login</a>
+      <a href="{% url 'accounts:register' %}">Register</a>
+    {% endif %}
+  </div>
+</nav>

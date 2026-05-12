@@ -1,0 +1,43 @@
+<aside class="sidebar">
+  <div class="sidebar-label">Main</div>
+
+  <a href="{% url 'dashboard:author_dashboard' %}">
+    <span class="ico">📊</span> Dashboard
+  </a>
+
+  <a href="{% url 'articles:list' %}">
+    <span class="ico">📄</span> Articles
+  </a>
+
+  <a href="{% url 'articles:create' %}">
+    <span class="ico">✚</span> Add Article
+  </a>
+
+  <div class="sidebar-label">User</div>
+
+  {% if user.is_authenticated %}
+    <a href="{% url 'accounts:profile' %}">
+      <span class="ico">👤</span> Profile
+    </a>
+
+    <a href="{% url 'interactions:bookmarks' %}">
+      <span class="ico">🔖</span> Bookmarks
+    </a>
+
+    <a href="{% url 'notifications:list' %}">
+      <span class="ico">🔔</span> Notifications
+    </a>
+
+    <a href="{% url 'accounts:logout' %}">
+      <span class="ico">🚪</span> Logout
+    </a>
+  {% else %}
+    <a href="{% url 'accounts:login' %}">
+      <span class="ico">🔐</span> Login
+    </a>
+
+    <a href="{% url 'accounts:register' %}">
+      <span class="ico">📝</span> Register
+    </a>
+  {% endif %}
+</aside>

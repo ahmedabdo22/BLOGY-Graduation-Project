@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container py-4">
+  <h1>My Bookmarks</h1>
+  {% for item in items %}
+    <p><a href="{{ item.article.get_absolute_url }}">{{ item.article.title }}</a></p>
+  {% empty %}
+    <p>No bookmarks yet.</p>
+  {% endfor %}
+</div>
+{% endblock %}
