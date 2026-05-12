@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container py-4">
+  <h1>My Articles</h1>
+  <a class="btn btn-primary mb-3" href="{% url 'articles:create' %}">Create Article</a>
+  {% for article in articles %}
+    <div class="card p-3 mb-2">
+      <h3>{{ article.title }}</h3>
+      <p>Status: {{ article.status }}</p>
+      <a href="{% url 'articles:edit' article.slug %}">Edit</a>
+    </div>
+  {% empty %}
+    <p>No articles yet.</p>
+  {% endfor %}
+</div>
+{% endblock %}

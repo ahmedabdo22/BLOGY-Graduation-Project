@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block content %}
+<article class="container py-4">
+  <h1>{{ article.title }}</h1>
+  <p>By <a href="{% url 'accounts:public_profile' article.author.username %}">{{ article.author.username }}</a> · {{ article.reading_time }} min read · {{ article.views_count }} views</p>
+  <div>{{ article.content|linebreaks }}</div>
+  <br>
+  {% if request.user.is_authenticated %}
+    <div class="my-3">
+      <a class="btn btn-outline-success" href="{% url 'interactions:clap' article.slug %}">Clap ({{ user_claps }})</a>
+      <a class="btn btn-outline-info" href="{% url 'interactions:bookmark' article.slug %}">{% if is_bookmarked %}Remove Bookmark{% else %}Bookmark{% endif %}</a>
+      <a class="btn btn-outline-warning" href="{% url 'interactions:report' article.slug %}">Report</a>
+      {% if request.user == article.author %}
+        <a class="btn btn-primary" href="{% url 'articles:edit' article.slug %}">Edit</a>
+        <a class="btn btn-danger" href="{% url 'articles:delete' article.slug %}">Delete</a>
+      {% endif %}
+    </div>
+    <br><br>
+    <h3>Comments</h3>
+    <form method="post" action="{% url 'comments:add' article.slug %}">{% csrf_token %}
+      {{ comment_form.as_p }}
+      <button class="btn btn-primary">Add Comment</button>
+    </form>
+  {% else %}
+    <p><a href="{% url 'accounts:login' %}">Login</a> to interact.</p>
+  {% endif %}
+    <br><br>
+  {% for comment in comments %}
+    <div class="border p-2 my-2">
+      <strong>{{ comment.user.username }}</strong><br>
+      <p>{{ comment.content }}</p>
+      {% for reply in comment.replies.all %}
+        <div class="ms-4 border-start ps-2">
+          <strong>{{ reply.user.username }}</strong>
+          <p>{{ reply.content }}</p>
+        </div>
+      {% endfor %}
+    </div>
+  {% empty %}
+    <p>No comments yet.</p>
+  {% endfor %}
+</article>
+{% endblock %}

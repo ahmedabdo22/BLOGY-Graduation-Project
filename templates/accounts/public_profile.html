@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container py-4">
+  <h1>{{ profile_user.username }}</h1>
+  <p>{{ profile_user.profile.bio }}</p>
+  {% if request.user.is_authenticated and request.user != profile_user %}
+    <a class="btn btn-outline-primary" href="{% url 'interactions:follow' profile_user.username %}">Follow / Unfollow</a>
+  {% endif %}
+  <h3 class="mt-4">Articles</h3>
+  {% for article in articles %}
+    <p><a href="{{ article.get_absolute_url }}">{{ article.title }}</a></p>
+  {% empty %}
+    <p>No public articles.</p>
+  {% endfor %}
+</div>
+{% endblock %}
