@@ -23,6 +23,7 @@ INSTALLED_APPS = [
     "interactions",
     "notifications",
     "dashboard",
+    'publications',
     "moderation",
 ]
 
