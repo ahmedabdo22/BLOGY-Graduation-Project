@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container py-4">
+  <h1>publications Edit</h1><br><br>
+
+<form method="POST" enctype="multipart/form-data" action="{% url 'publications:publication_edit' publication.pk  %}">
+{% csrf_token %}
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;max-width:860px;">
+
+  <!-- LEFT: Info -->
+  <div class="card">
+    <div class="section-title">Publication Info</div>
+    <table style="width:100%;">
+
+      <tbody>
+        <tr>
+          <td style="color:var(--muted);padding:.6rem 0;width:40%;">Name</td>
+          <td><input aria-label="publication name" type="text" name="name" value="{{ publication.name }}"/></td>
+        </tr>
+        <tr>
+          <td style="color:var(--muted);padding:.6rem 0;">description</td>
+          <td><textarea name="description" maxlength="400" rows="2">{{ publication.description }}</textarea></td>
+        </tr>
+        <tr>
+          <td style="color:var(--muted);padding:.6rem 0;">owner</td>
+          <td>
+              <select aria-label="" class="text-danger small mt-1" style="color:var(--red);" name="owner">
+                  {% for user in users %}
+                      <option value="{{ user.id }}" {% if user.id == publication.owner_id %} selected {% endif %}> {{ user.username }} </option>
+                  {% endfor %}
+              </select>
+          </td>
+        </tr>
+        <tr>
+            <td style="color:var(--muted);padding:.6rem 0;">Logo</td>
+            <td><input type="file" name="logo"/></td>
+        </tr>
+        {% if publication.delete_at %}
+        <tr>
+            <td style="color:var(--muted);padding:.6rem 0;">Restore</td>
+            <td><input type="checkbox" name="restore" value="1"></td>
+        </tr>
+        {% endif %}
+      </tbody>
+    </table>
+  </div>
+
+  <!--u RIGHT: Description + Actions -->
+  <div style="display:flex;flex-direction:column;gap:1rem;">
+    <div class="card">
+      <div class="section-title">Logo</div>
+        {% if publication.logo %}
+        <img src="{{ publication.logo.url }}" alt="{{ publication.logo }}"
+           style="max-width:100%;border-radius:8px;border:1px solid var(--border);" />
+        {% endif %}
+    </div>
+
+
+    <div class="card">
+      <div class="section-title">Actions</div>
+      <div style="display:flex;gap:.75rem;flex-wrap:wrap;">
+        <button type="submit" class="btn btn-primary">💾 Save</button>
+
+        <a href="{% url 'publications:publications_view' %}" class="btn btn-secondary">← Back to List</a>
+      </div>
+    </div>
+  </div>
+</div>
+</form>
+</div>
+{% endblock %}

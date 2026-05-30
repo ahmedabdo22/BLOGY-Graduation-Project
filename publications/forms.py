@@ -10,5 +10,6 @@ class PublicationForm(forms.ModelForm):
         fields = [
             'name',
             'description',
-            'logo'
+            'logo',
+            'owner'
         ]

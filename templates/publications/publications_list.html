@@ -4,7 +4,18 @@
 <div class="container py-4">
 <h1>Publications List</h1>
 <div class="toolbar">
-  <a href="{% url 'publications:publication_create' %}" class="btn btn-primary">➕ Add Publication</a>
+</div>
+<div class="toolbar">
+  <div class="search-box" style="max-width:250px;">
+    <span class="search-icon">🔍</span>
+    <input type="text" id="tableSearch" placeholder="Search Publications…" />
+  </div>
+  <select id="statusFilter" style="max-width:160px;">
+    <option value="">All Statuses</option>
+    <option value="active">Active</option>
+    <option value="deleted">Deleted</option>
+  </select>
+   <a href="{% url 'publications:publication_create' %}" class="btn btn-primary">➕ Add Publication</a>
 </div>
 <div class="card">
   <div class="table-wrap">
@@ -24,7 +35,7 @@
             {% for q in qs %}
             <tr>
                 <td style="color:var(--muted);">{{ q.id }}</td>
-                <td><strong>{{ q.name }}</strong></td>
+                <td><strong {% if q.delete_at != null %} class="badge badge-red" {% endif %}>{{ q.name }}</strong></td>
                 <td><span class="badge badge-blue">{{ q.slug }}</span></td>
                 <td style="color:var(--muted);">{{ q.description }}</td>
                 <td>{{ q.owner }}</td>
@@ -32,10 +43,12 @@
                 <td>
                     <div style="display:flex;gap:.4rem;flex-wrap:wrap;">
                       <a href="{% url 'publications:publication_detail' q.pk %}" class="btn btn-secondary btn-sm">👁</a>
-                      <a href="#" class="btn btn-success btn-sm">✏️</a>
-                      <a href="#"
+                      <a href="{% url 'publications:publication_edit' q.pk %}" class="btn btn-success btn-sm">✏️</a>
+                      {% if q.delete_at == null %}
+                      <a href="{% url 'publications:publication_delete' q.pk %}"
                          class="btn btn-danger btn-sm"
-                         data-confirm="Delete ''? This cannot be undone.">🗑️</a>
+                         data-confirm="Delete '{{ q.name }}'? This cannot be undone.">🗑️</a>
+                      {% endif %}
                     </div>
                 </td>
             </tr>

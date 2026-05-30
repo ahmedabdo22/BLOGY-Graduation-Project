@@ -37,6 +37,21 @@
                             {% endif %}
                         </div>
 
+                        <!-- Publication Logo -->
+                        <div class="mb-4">
+                            <label class="form-label fw-semibold">
+                                Publication Logo
+                            </label>
+
+                            {{ form.logo }}
+
+                            {% if form.logo.errors %}
+                                <div class="text-danger small mt-1">
+                                    {{ form.logo.errors }}
+                                </div>
+                            {% endif %}
+                        </div>
+
                         <!-- Description -->
                         <div class="mb-4">
                             <label class="form-label fw-semibold">
@@ -48,6 +63,21 @@
                             {% if form.description.errors %}
                                 <div class="text-danger small mt-1">
                                     {{ form.description.errors }}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                                <!-- Description -->
+                        <div class="mb-4">
+                            <label class="form-label fw-semibold">
+                                Owner
+                            </label>
+
+                            {{ form.owner }}
+
+                            {% if form.owner.errors %}
+                                <div class="text-danger small mt-1">
+                                    {{ form.owner.errors }}
                                 </div>
                             {% endif %}
                         </div>

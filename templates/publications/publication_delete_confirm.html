@@ -11,11 +11,11 @@
       All data related to this publication will be removed from the system.
     </p>
     <div style="display:flex;gap:.75rem;">
-      <form method="post">
+      <form method="POST">
         {% csrf_token %}
         <button type="submit" class="btn btn-danger">🗑️ Yes, Delete</button>
       </form>
-      <a href="{% url 'publications:publications_view' %}" class="btn btn-secondary">✕ Cancel</a>
+      <a href="{% url 'publications:publications_view'  %}" class="btn btn-secondary">✕ Cancel</a>
     </div>
   </div>
 </div>

@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
 <div class="container py-4">
-  <h1>publications</h1><br><br>
+  <h1>publications Details</h1><br><br>
 
 
 <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;max-width:860px;">
@@ -20,10 +20,6 @@
           <td><span class="badge badge-blue">{{ publication.slug }}</span></td>
         </tr>
         <tr>
-          <td style="color:var(--muted);padding:.6rem 0;">description</td>
-          <td><strong style="color:var(--green);">{{ publication.description }}</strong></td>
-        </tr>
-        <tr>
           <td style="color:var(--muted);padding:.6rem 0;">owner</td>
           <td>
               <span style="color:var(--red);">{{ publication.owner }}</span>
@@ -31,14 +27,15 @@
         </tr>
         <tr>
           <td style="color:var(--muted);padding:.6rem 0;">Status</td>
+          <td>{% if publication.status %} {{ publication.status }} {% else %} NUL {% endif %}</td>
         </tr>
         <tr>
           <td style="color:var(--muted);padding:.6rem 0;">Created</td>
           <td>{{ publication.created_at }}</td>
         </tr>
         <tr>
-          <td style="color:var(--muted);padding:.6rem 0;">Updated</td>
-          <td></td>
+          <td style="color:var(--muted);padding:.6rem 0;">Deleted</td>
+          <td>{{ publication.delete_at }}</td>
         </tr>
       </tbody>
     </table>
@@ -55,19 +52,22 @@
 
 
     <div class="card">
-      <div class="section-title">Image</div>
-      <img src="" alt=""
+      <div class="section-title">Logo</div>
+        {% if publication.logo %}
+        <img src="{{ publication.logo.url }}" alt="{{ publication.logo }}"
            style="max-width:100%;border-radius:8px;border:1px solid var(--border);" />
+        {% endif %}
     </div>
 
 
     <div class="card">
       <div class="section-title">Actions</div>
       <div style="display:flex;gap:.75rem;flex-wrap:wrap;">
-        <a href="#" class="btn btn-success">✏️ Edit</a>
+        <a href="{% url 'publications:publication_edit' publication.pk %}" class="btn btn-success">✏️ Edit</a>
+        {% if publication.delete_at == null %}
         <a href="{% url 'publications:publication_delete' publication.pk %}"
-           class="btn btn-danger"
-           data-confirm="Delete '{{ publication.name }}'? This cannot be undone.">🗑️ Delete</a>
+           class="btn btn-danger">🗑️ Delete</a>
+        {% endif %}
         <a href="{% url 'publications:publications_view' %}" class="btn btn-secondary">← Back to List</a>
       </div>
     </div>
