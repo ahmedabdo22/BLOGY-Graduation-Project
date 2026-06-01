@@ -6,6 +6,7 @@ from .forms import ArticleForm
 from .models import Article
 from comments.forms import CommentForm
 from comments.models import Comment
+from django.db import models
 from interactions.models import Bookmark, Clap
 
 def article_list(request):
@@ -34,6 +35,14 @@ def article_detail(request, slug):
 
 @login_required
 def article_create(request):
+    from publications.models import Publication  # import here to avoid circular imports
+
+    # Only show publications where the user is owner or contributor
+    publications = Publication.objects.filter(
+        models.Q(owner=request.user) |
+        models.Q(contributors__user=request.user)
+    ).distinct()
+
     form = ArticleForm(request.POST or None, request.FILES or None)
     if request.method == "POST" and form.is_valid():
         article = form.save(commit=False)
@@ -44,11 +53,23 @@ def article_create(request):
         form.save_m2m()
         messages.success(request, "Article saved successfully.")
         return redirect(article.get_absolute_url() if article.status == "published" else "articles:my_articles")
-    return render(request, "articles/article_form.html", {"form": form, "title": "Create Article"})
+
+    return render(request, "articles/article_form.html", {
+        "form": form,
+        "title": "Create Article",
+        "publications": publications,
+    })
 
 @login_required
 def article_edit(request, slug):
+    from publications.models import Publication
+
     article = get_object_or_404(Article, slug=slug, author=request.user)
+    publications = Publication.objects.filter(
+        models.Q(owner=request.user) |
+        models.Q(contributors__user=request.user)
+    ).distinct()
+
     form = ArticleForm(request.POST or None, request.FILES or None, instance=article)
     if request.method == "POST" and form.is_valid():
         article = form.save(commit=False)
@@ -58,7 +79,12 @@ def article_edit(request, slug):
         form.save_m2m()
         messages.success(request, "Article updated successfully.")
         return redirect(article.get_absolute_url() if article.status == "published" else "articles:my_articles")
-    return render(request, "articles/article_form.html", {"form": form, "title": "Edit Article"})
+
+    return render(request, "articles/article_form.html", {
+        "form": form,
+        "title": "Edit Article",
+        "publications": publications,
+    })
 
 @login_required
 def article_delete(request, slug):

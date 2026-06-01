@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container py-5">
+
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+
+            <div class="card shadow-sm border-0 rounded-4">
+
+                <div class="card-body p-5">
+
+                    <!-- Header -->
+                    <div class="text-center mb-4">
+                        <h2 class="fw-bold">
+                            Invite Contributor to {{ publication.name }}
+                        </h2>
+                        <p class="text-muted mt-2">
+                            Select a user to invite as a contributor. They will receive an invitation and can accept or reject.
+                        </p>
+                    </div>
+
+                    <!-- Invitation Form -->
+                    <form method="POST">
+                        {% csrf_token %}
+
+                        <div class="mb-4">
+                            <label class="form-label fw-semibold">
+                                Choose User
+                            </label>
+                            <select name="invited_user" class="form-select">
+                                {% for user in users %}
+                                    <option value="{{ user.id }}">{{ user.username }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <div class="d-grid mt-4">
+                            <button type="submit" class="btn btn-dark btn-lg rounded-3">
+                                📩 Send Invitation
+                            </button>
+                        </div>
+                    </form>
+
+                    <!-- Back Button -->
+                    <div class="d-grid mt-3">
+                        <a href="{% url 'publications:publication_contributors' publication.pk %}"
+                           class="btn btn-secondary rounded-3">
+                           ← Back to Contributors
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

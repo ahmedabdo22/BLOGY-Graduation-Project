@@ -14,6 +14,7 @@
   --green:     #00a35a;
   --red:       #d62839;
   --yellow:    #f5a623;
+  --blue:      #2e00ff;
   --text:      #111111;   /* main text color */
   --muted:     #555555;   /* muted text */
   --font-head: 'Sora', sans-serif;
@@ -175,6 +176,7 @@ a:hover { opacity: .8; }
   color: var(--muted);
   padding: .75rem .5rem .3rem;
 }
+
 .sidebar a {
   display: flex;
   align-items: center;
@@ -185,17 +187,27 @@ a:hover { opacity: .8; }
   border-radius: var(--radius);
   transition: all .2s;
 }
-.sidebar a:hover, .sidebar a.active {
+.ahmed a:hover, .sidebar a.active {
   color: var(--text);
   background: var(--surface2);
 }
-.sidebar a.active { color: var(--accent); }
+.ahmed a.active { color: var(--accent); }
 .sidebar .ico { width: 18px; text-align: center; }
 
 .main-content {
   flex: 1;
   padding: 2rem 2.5rem;
   overflow-x: hidden;
+}
+.ahmed a {
+  display: flex;
+  align-items: center;
+  gap: .65rem;
+  color: var(--muted);
+  font-size: .88rem;
+  padding: .55rem .75rem;
+  border-radius: var(--radius);
+  transition: all .2s;
 }
 
 /* ── FOOTER ── */

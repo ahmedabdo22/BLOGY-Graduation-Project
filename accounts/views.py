@@ -9,6 +9,8 @@ from django.shortcuts import redirect
 from django.contrib import messages
 from .models import Profile
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from newsletters.models import NewsletterSubscription
+from interactions.models import Follow
 
 def register_view(request):
     if request.method == "POST":
@@ -47,13 +49,43 @@ def profile_view(request):
     return render(request, "accounts/profile.html")
 
 def public_profile(request, username):
-    profile_user = get_object_or_404(User, username=username)
-    articles = profile_user.articles.filter(status="published")
-    return render(request, "accounts/public_profile.html", {
-        "profile_user": profile_user,
-        "articles": articles
-    })
 
+    profile_user = get_object_or_404(
+        User,
+        username=username
+    )
+
+    articles = profile_user.articles.filter(
+        status="published"
+    )
+
+    is_subscribed = False
+
+    if request.user.is_authenticated:
+        is_subscribed = NewsletterSubscription.objects.filter(
+            subscriber=request.user,
+            author=profile_user
+        ).exists()
+
+    subscriber_count = NewsletterSubscription.objects.filter(
+        author=profile_user
+    ).count()
+
+    followers_count = Follow.objects.filter(
+        following=profile_user
+    ).count()
+
+    return render(
+        request,
+        "accounts/public_profile.html",
+        {
+            "profile_user": profile_user,
+            "articles": articles,
+            "is_subscribed": is_subscribed,
+            "subscriber_count": subscriber_count,
+            "followers_count": followers_count,
+        }
+    )
 @login_required
 def edit_profile(request):
     profile, created = Profile.objects.get_or_create(user=request.user)

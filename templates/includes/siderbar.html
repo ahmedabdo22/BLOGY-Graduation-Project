@@ -20,6 +20,10 @@
       <span class="ico">👤</span> Profile
     </a>
 
+    <a href="{% url 'accounts:public_profile' user.username %}">
+      <span class="ico">👤</span> public_profile
+    </a>
+
     <a href="{% url 'interactions:bookmarks' %}">
       <span class="ico">🔖</span> Bookmarks
     </a>
@@ -31,6 +35,14 @@
     <a href="{% url 'publications:publications_view' %}">
       <span class="ico">📚</span> Publications
     </a>
+
+    <a class="ahmed" href="{% url 'publications:pending_invitations' %}">
+      <span class="ico">📩</span> Invitations
+      {% if pending_invites_count > 0 %}
+        <span class="badge bg-danger ms-2">{{ pending_invites_count }}</span>
+      {% endif %}
+    </a>
+
 
     <a href="{% url 'accounts:logout' %}">
       <span class="ico">🚪</span> Logout

@@ -26,7 +26,6 @@ class Publication(models.Model):
 
 
 class PublicationContributor(models.Model):
-
     ROLE_CHOICES = (
         ('owner', 'Owner'),
         ('editor', 'Editor'),
@@ -35,20 +34,11 @@ class PublicationContributor(models.Model):
 
     publication = models.ForeignKey(
         Publication,
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
+        related_name="contributors"   # ✅ add this
     )
-
-    user = models.ForeignKey(
-        User,
-        on_delete=models.CASCADE
-    )
-
-    role = models.CharField(
-        max_length=20,
-        choices=ROLE_CHOICES,
-        default='writer'
-    )
-
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    role = models.CharField(max_length=20, choices=ROLE_CHOICES, default='writer')
     joined_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
@@ -57,8 +47,8 @@ class PublicationContributor(models.Model):
 
 
 
-class PublicationInvitation(models.Model):
 
+class PublicationInvitation(models.Model):
     STATUS_CHOICES = (
         ('pending', 'Pending'),
         ('accepted', 'Accepted'),
@@ -67,7 +57,8 @@ class PublicationInvitation(models.Model):
 
     publication = models.ForeignKey(
         Publication,
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
+        related_name='invitations'
     )
 
     invited_user = models.ForeignKey(
@@ -90,11 +81,12 @@ class PublicationInvitation(models.Model):
 
     created_at = models.DateTimeField(auto_now_add=True)
 
+    def __str__(self):
+        return f"{self.invited_user.username} -> {self.publication.name}"
+
 
 
 def save(self, *args, **kwargs):
 
     if not self.slug:
         self.slug = slugify(self.name)
-
-    super().save(*args, **kwargs)
