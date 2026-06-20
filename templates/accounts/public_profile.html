@@ -1,16 +1,157 @@
 {% extends "base.html" %}
+
 {% block content %}
-<div class="container py-4">
-  <h1>{{ profile_user.username }}</h1>
-  <p>{{ profile_user.profile.bio }}</p>
-  {% if request.user.is_authenticated and request.user != profile_user %}
-    <a class="btn btn-outline-primary" href="{% url 'interactions:follow' profile_user.username %}">Follow / Unfollow</a>
-  {% endif %}
-  <h3 class="mt-4">Articles</h3>
-  {% for article in articles %}
-    <p><a href="{{ article.get_absolute_url }}">{{ article.title }}</a></p>
-  {% empty %}
-    <p>No public articles.</p>
-  {% endfor %}
+<div class="container-fluid py-4">
+
+    <!-- Profile Card -->
+<div class="card border-0 shadow-sm mb-4 profile-hero">
+    <div class="card-body p-4">
+
+        <div class="row align-items-center">
+
+            <!-- Avatar -->
+            <div class="col-lg-2 text-center">
+                <img src="{% if profile_user.profile.avatar %}{{ profile_user.profile.avatar.url }}{% else %}https://via.placeholder.com/140{% endif %}"
+                     class="rounded-circle shadow-sm profile-avatar"
+                     alt="{{ profile_user.username }}">
+            </div>
+
+            <!-- User Information -->
+            <div class="col-lg-5">
+
+                <h1 class="fw-bold mb-1">
+                    {{ profile_user.get_full_name|default:profile_user.username }}
+                </h1>
+
+                <h5 class="text-primary mb-3">
+                    @{{ profile_user.username }}
+                </h5>
+
+                <p class="text-muted mb-3">
+                    {{ profile_user.profile.bio|default:"No bio available." }}
+                </p>
+
+                <div class="d-flex gap-4 text-muted">
+
+                    <div>
+                        <i class="bi bi-geo-alt"></i>
+                        Cairo, Egypt
+                    </div>
+
+                    <div>
+                        <i class="bi bi-calendar3"></i>
+                        Joined {{ profile_user.date_joined|date:"M Y" }}
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- Actions & Newsletter -->
+            <div class="col-lg-5">
+
+                <div class="d-flex justify-content-end gap-2 mb-4">
+
+                    {% if request.user != profile_user %}
+
+                        <a href="{% url 'interactions:follow' profile_user.username %}"
+                           class="btn btn-primary px-4 py-2">
+
+                            <i class="bi bi-person-plus"></i>
+                            Follow
+
+                        </a>
+
+                        <button class="btn btn-outline-secondary px-4 py-2">
+
+                            <i class="bi bi-envelope"></i>
+                            Message
+
+                        </button>
+
+                    {% endif %}
+
+                </div>
+
+                <div class="text-end newsletter-box">
+
+                    <h1 class="fw-bold mb-0">
+                        {{ subscriber_count|default:"124" }}
+                    </h1>
+
+                    <div class="text-muted fw-semibold">
+                        Newsletter Subscribers
+                    </div>
+
+                    <div class="newsletter-icon">
+                        <i class="bi bi-send"></i>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+    <!-- Articles -->
+    <div class="card shadow-sm border-0">
+        <div class="card-body">
+
+            <h2 class="fw-bold mb-4">
+                Articles
+            </h2>
+
+            {% for article in articles %}
+
+                <div class="card mb-3 border-0 shadow-sm">
+
+                    <div class="card-body">
+
+                        <h4>
+                            <a href="{{ article.get_absolute_url }}"
+                               class="text-decoration-none">
+                                {{ article.title }}
+                            </a>
+                        </h4>
+
+                        <p class="text-muted">
+                            {{ article.content|truncatewords:25 }}
+                        </p>
+
+                        <div class="d-flex justify-content-between">
+
+                            <small class="text-muted">
+                                {{ article.created_at|date:"M d, Y" }}
+                            </small>
+
+                            <a href="{{ article.get_absolute_url }}"
+                               class="btn btn-sm btn-outline-primary">
+                                Read More
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            {% empty %}
+
+                <div class="text-center py-5">
+
+                    <h5 class="text-muted">
+                        No articles published yet
+                    </h5>
+
+                </div>
+
+            {% endfor %}
+
+        </div>
+    </div>
+
 </div>
 {% endblock %}

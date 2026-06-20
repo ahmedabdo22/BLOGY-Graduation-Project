@@ -3,15 +3,25 @@ from django.db import models
 from django.urls import reverse
 from django.utils.text import slugify
 from categories.models import Category, Tag
+from publications.models import Publication
 
 class Article(models.Model):
     STATUS_CHOICES = (
         ("draft", "Draft"),
         ("published", "Published"),
     )
+
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="articles")
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, blank=True, related_name="articles")
     tags = models.ManyToManyField(Tag, blank=True, related_name="articles")
+    publication = models.ForeignKey(
+        Publication,
+        on_delete=models.CASCADE,
+        related_name="articles",
+        null=True,
+        blank=True
+    )
+
     title = models.CharField(max_length=255)
     slug = models.SlugField(max_length=280, unique=True, blank=True)
     content = models.TextField()

@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container py-5">
+
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+
+            <div class="card shadow-sm border-0 rounded-4">
+
+                <div class="card-body p-5">
+
+                    <!-- Header -->
+                    <div class="text-center mb-4">
+                        <h2 class="fw-bold">
+                            Pending Invitations
+                        </h2>
+                        <p class="text-muted mt-2">
+                            Review your invitations to join publications. You can accept or reject each one.
+                        </p>
+                    </div>
+
+                    <!-- Invitations List -->
+                    {% if invitations %}
+                        <ul class="list-group list-group-flush">
+                          {% for invite in invitations %}
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                              <div>
+                                📚 <strong>{{ invite.publication.name }}</strong>
+                                <span class="text-muted">invited by {{ invite.invited_by.username }}</span>
+                              </div>
+                              <form method="POST" action="{% url 'publications:publication_invitation_respond' invite.pk %}">
+                                {% csrf_token %}
+                                <button type="submit" name="action" value="accept" class="btn btn-success btn-sm">✅ Accept</button>
+                                <button type="submit" name="action" value="reject" class="btn btn-danger btn-sm">❌ Reject</button>
+                              </form>
+                            </li>
+                          {% endfor %}
+                        </ul>
+                    {% else %}
+                        <div class="alert alert-info text-center">
+                            You have no pending invitations.
+                        </div>
+                    {% endif %}
+
+                    <!-- Back Button -->
+                    <div class="d-grid mt-4">
+                        <a href="{% url 'publications:publications_view' %}"
+                           class="btn btn-secondary rounded-3">
+                           ← Back to Publications
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

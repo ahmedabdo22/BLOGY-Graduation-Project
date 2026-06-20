@@ -1,0 +1,8 @@
+<h2>Invitation to {{ invitation.publication.name }}</h2>
+<p>You were invited by {{ invitation.invited_by.username }}</p>
+
+<form method="POST">
+  {% csrf_token %}
+  <button type="submit" name="action" value="accept" class="btn btn-success">✅ Accept</button>
+  <button type="submit" name="action" value="reject" class="btn btn-danger">❌ Reject</button>
+</form>

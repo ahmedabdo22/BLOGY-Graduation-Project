@@ -1,0 +1,122 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container py-4">
+  <h1>publications Details</h1><br><br>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;max-width:860px;">
+
+    <!-- LEFT: Publication Info -->
+    <div class="card">
+      <div class="section-title">Publication Info</div>
+      <table style="width:100%;">
+        <tbody>
+          <tr>
+            <td style="color:var(--muted);padding:.6rem 0;width:40%;">Name</td>
+            <td><strong>{{ publication.name }}</strong></td>
+          </tr>
+          <tr>
+            <td style="color:var(--muted);padding:.6rem 0;">SLUG</td>
+            <td><span class="badge badge-blue">{{ publication.slug }}</span></td>
+          </tr>
+          <tr>
+            <td style="color:var(--muted);padding:.6rem 0;">Owner</td>
+            <td><span style="color:var(--red);">{{ publication.owner }}</span></td>
+          </tr>
+          <tr>
+            <td style="color:var(--muted);padding:.6rem 0;">Status</td>
+            <td>{% if publication.status %}{{ publication.status }}{% else %}NUL{% endif %}</td>
+          </tr>
+          <tr>
+              <td style="color:var(--muted);padding:.6rem 0;">Contributors</td>
+              <td> <a href="{% url 'publications:publication_contributors' publication.pk %}" >👥 Contributors</a>
+              </td>
+          </tr>
+          <tr>
+            <td style="color:var(--muted);padding:.6rem 0;">Created</td>
+            <td>{{ publication.created_at }}</td>
+          </tr>
+          <tr>
+            <td style="color:var(--muted);padding:.6rem 0;">Deleted</td>
+            <td>{{ publication.delete_at }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- RIGHT: Description + Logo -->
+    <div style="display:flex;flex-direction:column;gap:1rem;">
+
+      <div class="card">
+        <div class="section-title">Description</div>
+        <p style="color:var(--muted);font-size:.9rem;line-height:1.6;">
+          {{ publication.description }}
+        </p>
+      </div>
+
+      <div class="card">
+        <div class="section-title">Logo</div>
+        {% if publication.logo %}
+        <img src="{{ publication.logo.url }}" alt="{{ publication.logo }}"
+             style="max-width:100%;border-radius:8px;border:1px solid var(--border);" />
+        {% endif %}
+      </div>
+
+    </div>
+
+    <!-- BOTTOM LEFT: Articles -->
+    <div class="card">
+      <div class="section-title">Articles</div>
+
+      {% for article in publication.articles.all %}
+      <div style="display:flex;align-items:center;gap:.75rem;padding:.55rem 0;border-bottom:1px solid var(--border);">
+        <span>
+          {% if article.status == 'published' %}✅{% else %}🟡{% endif %}
+        </span>
+        <div>
+          <a href="#" style="color:var(--blue);font-weight:500;text-decoration:none;">{{ article.title }}</a>
+          <span style="color:var(--muted);font-size:.82rem;margin-left:.4rem;">
+            by {{ article.author }} · {{ article.status|capfirst }} · {{ article.created_at|date:"M j, Y" }}
+          </span>
+        </div>
+      </div>
+      {% endfor %}
+
+    </div>
+
+    <!-- BOTTOM RIGHT: Contributors -->
+    <div class="card">
+      <div class="section-title">Contributors</div>
+
+      {% for contributor in publication.contributors.all %}
+      <div style="display:flex;align-items:center;gap:.75rem;padding:.55rem 0;border-bottom:1px solid var(--border);">
+        {% if contributor.user.profile.profile_image %}
+          <img src="{{ contributor.user.profile.profile_image }}" alt="{{ contributor.user.username }}"
+               style="width:36px;height:36px;border-radius:50%;object-fit:cover;border:1px solid var(--border);" />
+        {% else %}
+          <div style="width:36px;height:36px;border-radius:50%;background:#3d5a99;color:#fff;
+                      display:flex;align-items:center;justify-content:center;font-weight:600;font-size:.85rem;flex-shrink:0;">
+            {{ contributor.username|first|upper }}
+          </div>
+        {% endif %}
+        <div>
+          <div style="font-weight:600;font-size:.9rem;">{{ contributor.user.username }}</div>
+          <div style="color:var(--muted);font-size:.8rem;">{{ contributor.role|capfirst }}</div>
+        </div>
+      </div>
+      {% endfor %}
+
+    </div>
+
+  </div><!-- /grid -->
+
+  <br>
+  <div style="display:flex;gap:.75rem;flex-wrap:wrap;">
+    <a href="{% url 'publications:publication_edit' publication.pk %}" class="btn btn-success">✏️ Edit</a>
+    {% if not publication.delete_at %}
+    <a href="{% url 'publications:publication_delete' publication.pk %}" class="btn btn-danger">🗑️ Delete</a>
+    {% endif %}
+    <a href="{% url 'publications:publications_view' %}" class="btn btn-secondary">← Back to List</a>
+  </div>
+
+</div>
+{% endblock %}

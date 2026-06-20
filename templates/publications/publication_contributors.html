@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container py-5">
+
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+
+            <div class="card shadow-sm border-0 rounded-4">
+
+                <div class="card-body p-5">
+
+                    <!-- Header -->
+                    <div class="text-center mb-4">
+                        <h2 class="fw-bold">
+                            Contributors for {{ publication.name }}
+                        </h2>
+                        <p class="text-muted mt-2">
+                            Manage contributors and invite new members to collaborate on this publication.
+                        </p>
+                    </div>
+
+                    <!-- Contributors List -->
+                    <div class="mb-4">
+                        <h5 class="fw-semibold">Current Contributors</h5>
+                        <ul class="list-group list-group-flush">
+                          {% for contributor in contributors %}
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                              <span>
+                                👤 <strong>{{ contributor.user.username }}</strong>
+                                <span class="badge bg-primary ms-2">{{ contributor.role }}</span>
+                              </span>
+                              <small class="text-muted">Joined: {{ contributor.joined_at }}</small>
+                            </li>
+                          {% empty %}
+                            <li class="list-group-item text-muted">No contributors yet.</li>
+                          {% endfor %}
+                        </ul>
+                    </div>
+
+                    <!-- Invite Button -->
+                    <div class="d-grid mt-4">
+                        <a href="{% url 'publications:publication_invite' publication.pk %}"
+                           class="btn btn-dark btn-lg rounded-3">
+                           ➕ Invite Contributor
+                        </a>
+                    </div>
+
+                    <!-- Back Button -->
+                    <div class="d-grid mt-3">
+                        <a href="{% url 'publications:publication_detail' publication.pk %}"
+                           class="btn btn-secondary rounded-3">
+                           ← Back to Publication
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

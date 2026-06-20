@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container py-4">
+<h1>Publications List</h1>
+<div class="toolbar">
+</div>
+<div class="toolbar">
+  <div class="search-box" style="max-width:250px;">
+    <span class="search-icon">🔍</span>
+    <input type="text" id="tableSearch" placeholder="Search Publications…" />
+  </div>
+  <select id="statusFilter" style="max-width:160px;">
+    <option value="">All Statuses</option>
+    <option value="active">Active</option>
+    <option value="deleted">Deleted</option>
+  </select>
+   <a href="{% url 'publications:publication_create' %}" class="btn btn-primary">➕ Add Publication</a>
+</div>
+<div class="card">
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Name</th>
+          <th>SLUG</th>
+          <th>description</th>
+          <th>owner</th>
+          <th>created_at</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+        <tbody>
+            {% for q in qs %}
+            <tr>
+                <td style="color:var(--muted);">{{ q.id }}</td>
+                <td><strong {% if q.delete_at != null %} class="badge badge-red" {% endif %}>{{ q.name }}</strong></td>
+                <td><span class="badge badge-blue">{{ q.slug }}</span></td>
+                <td style="color:var(--muted);">{{ q.description }}</td>
+                <td>{{ q.owner }}</td>
+                <td>{{ q.created_at }}</td>
+                <td>
+                    <div style="display:flex;gap:.4rem;flex-wrap:wrap;">
+                      <a href="{% url 'publications:publication_detail' q.pk %}" class="btn btn-secondary btn-sm">👁</a>
+                      <a href="{% url 'publications:publication_edit' q.pk %}" class="btn btn-success btn-sm">✏️</a>
+                      {% if q.delete_at == null %}
+                      <a href="{% url 'publications:publication_delete' q.pk %}"
+                         class="btn btn-danger btn-sm"
+                         data-confirm="Delete '{{ q.name }}'? This cannot be undone.">🗑️</a>
+                      {% endif %}
+                    </div>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+  </div>
+
+</div>
+
+</div>
+
+{% endblock %}

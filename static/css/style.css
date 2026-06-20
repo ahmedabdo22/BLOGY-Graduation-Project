@@ -5,22 +5,23 @@
 @import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Sora:wght@300;400;600;700&display=swap');
 
 :root {
-  --bg:        #0b0f1a;
-  --surface:   #131929;
-  --surface2:  #1a2236;
-  --border:    #1f2d4a;
-  --accent:    #00e5ff;
-  --accent2:   #7b61ff;
-  --green:     #00ffa3;
-  --red:       #ff4d6d;
-  --yellow:    #ffd166;
-  --text:      #e2eaf7;
-  --muted:     #6b7fa8;
+  --bg:        #ffffff;   /* page background */
+  --surface:   #ffffff;   /* card / box background */
+  --surface2: #d5e4ef;   /* secondary surface */
+  --border:    #878282;   /* light gray border */
+  --accent:    #0077ff;   /* primary accent (blue) */
+  --accent2:   #7b61ff;   /* secondary accent (purple) */
+  --green:     #00a35a;
+  --red:       #d62839;
+  --yellow:    #f5a623;
+  --blue:      #2e00ff;
+  --text:      #111111;   /* main text color */
+  --muted:     #555555;   /* muted text */
   --font-head: 'Sora', sans-serif;
   --font-mono: 'Space Mono', monospace;
   --radius:    10px;
   --nav-h:     64px;
-  --shadow:    0 4px 24px rgba(0,0,0,0.5);
+  --shadow:    0 4px 12px rgba(0,0,0,0.08);
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -175,6 +176,7 @@ a:hover { opacity: .8; }
   color: var(--muted);
   padding: .75rem .5rem .3rem;
 }
+
 .sidebar a {
   display: flex;
   align-items: center;
@@ -185,17 +187,27 @@ a:hover { opacity: .8; }
   border-radius: var(--radius);
   transition: all .2s;
 }
-.sidebar a:hover, .sidebar a.active {
+.ahmed a:hover, .sidebar a.active {
   color: var(--text);
   background: var(--surface2);
 }
-.sidebar a.active { color: var(--accent); }
+.ahmed a.active { color: var(--accent); }
 .sidebar .ico { width: 18px; text-align: center; }
 
 .main-content {
   flex: 1;
   padding: 2rem 2.5rem;
   overflow-x: hidden;
+}
+.ahmed a {
+  display: flex;
+  align-items: center;
+  gap: .65rem;
+  color: var(--muted);
+  font-size: .88rem;
+  padding: .55rem .75rem;
+  border-radius: var(--radius);
+  transition: all .2s;
 }
 
 /* ── FOOTER ── */

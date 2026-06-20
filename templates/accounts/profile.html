@@ -6,5 +6,7 @@
   <p>Email: {{ request.user.email }}</p>
   <p>Bio: {{ request.user.profile.bio }}</p>
   <a href="{% url 'accounts:edit_profile' %}" class="btn btn-primary">Edit Profile</a>
+
+
 </div>
 {% endblock %}

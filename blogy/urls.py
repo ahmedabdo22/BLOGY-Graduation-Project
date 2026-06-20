@@ -13,6 +13,8 @@ urlpatterns = [
     path("interactions/", include("interactions.urls")),
     path("notifications/", include("notifications.urls")),
     path("dashboard/", include("dashboard.urls")),
+    path('publications/',include('publications.urls')),
+    path('newsletters/',include('newsletters.urls')),
     path("moderation/", include("moderation.urls")),
 ]
 
