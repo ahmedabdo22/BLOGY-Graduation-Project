@@ -1,0 +1,138 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+
+<div class="article-details-page">
+
+    <!-- Header -->
+
+    <div class="card article-header-card">
+            <div>
+                <div class="article-badges">
+                    <span class="status-badge published">Published</span>
+                    <span class="publication-badge">QC Publication</span>
+                </div>
+                <h1 class="article-title">{{ article.title }}</h1>
+                <div class="article-meta">
+                    <span>
+                        👤 {{ article.author.username }}
+                    </span>
+                    <span>
+                        📅 {{ article.created_at|date:"d M Y" }}
+                    </span>
+                    <span>
+                        ⏱ {{ article.reading_time }} min read
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Statistics -->
+
+    <div class="card-grid">
+        <div class="stat-card c1">
+            <div class="stat-label">Views</div>
+            <div class="stat-value">
+                {{ article.views_count }}
+            </div>
+        </div>
+        <div class="stat-card c2">
+            <div class="stat-label">Claps</div>
+            <div class="stat-value">
+                {{ article.claps.count }}
+            </div>
+        </div>
+        <div class="stat-card c3">
+            <div class="stat-label">Comments</div>
+            <div class="stat-value">
+                {{ article.comments.count }}
+            </div>
+        </div>
+        <div class="stat-card c4">
+            <div class="stat-label">Reports</div>
+            <div class="stat-value">
+                {{ article.reports.count }}
+            </div>
+        </div>
+    </div>
+
+    <!-- Content -->
+    <div class="card article-content-card">
+        <div class="section-title">
+            Article Content
+        </div>
+        <div class="article-content">
+            {{ article.content|safe }}
+        </div>
+    </div>
+
+    <!-- Author -->
+    <div class="card">
+
+        <div class="section-title">
+            Author Information
+        </div>
+
+        <div class="author-box">
+
+            <div>
+
+                <h3>
+                    {{ article.author.username }}
+                </h3>
+
+                <p>
+                    {{ article.author.email }}
+                </p>
+
+            </div>
+
+            <a href="{% url 'moderation:user_profile_detail' article.author_id %}" class="btn btn-primary">
+                View Profile
+            </a>
+
+        </div>
+
+    </div>
+
+    <!-- Reports -->
+    <div class="card">
+
+        <div class="section-title">
+            Reports
+        </div>
+
+        {% if article.reports.count %}
+
+            {% for report in article.reports.all %}
+
+            <div class="report-item">
+
+                <strong>
+                    {{ report.reporter.username }}
+                </strong>
+
+                <p>
+                    {{ report.reason }}
+                </p>
+
+            </div>
+
+            {% endfor %}
+
+        {% else %}
+
+            <p>
+                No reports found.
+            </p>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+{% endblock %}
+

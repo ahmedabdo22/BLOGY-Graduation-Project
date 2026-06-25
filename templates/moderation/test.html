@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+{% for Q in QS %}
+<strong style="color: coral">{{ Q.id }} -- {{ Q.name }}</strong> -- <strong class="badge">{{ Q.articles.count }}</strong><br>
+    <li>
+        {% if Q.articles %}
+                {% for art in Q.articles.all %}
+
+                    <ul style="color:darkred">{{ art.title }}</ul>
+
+                {% endfor %}
+        {% else %}
+            No Articles
+        {% endif %}
+    </li>
+{% endfor %}
+
+<br><br>
+{{ Test.name }} -- {{ Test.articles.count }}<br>
+{% for x in Test.articles.all %}
+    - {{ x.title }} <br>
+{% endfor %}
+
+{% for t in BB %}
+    {{ t.TT }} -- {{ t.username }} ****<br>
+{% endfor %}
+</body>
+</html>

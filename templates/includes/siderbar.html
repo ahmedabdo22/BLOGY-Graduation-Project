@@ -1,3 +1,67 @@
+{% if request.user.is_staff %}
+ <!-- Sidebar Admin -->
+<aside class="sidebar">
+        <div class="sidebar-label">Administration</div>
+
+        <a href="{% url 'dashboard:admin_dashboard' %}" class="active">
+            <span class="ico">📊</span>
+            Dashboard
+        </a>
+
+        <a href="{% url 'moderation:all_users' %}">
+            <span class="ico">👥</span>
+            Users
+        </a>
+
+        <a href="{% url 'moderation:article_view_admin' %}">
+            <span class="ico">📝</span>
+            Articles
+        </a>
+
+        <a href="#">
+            <span class="ico"><a href="{% url 'publications:publications_view' %}" >🏢 Publications</a></span>
+
+        </a>
+
+        <a href="#">
+            <span class="ico">💬</span>
+            Comments
+        </a>
+
+        <a href="#">
+            <span class="ico">🏷️</span>
+            Tags
+        </a>
+
+        <a href="#">
+            <span class="ico">🚩</span>
+            Reports
+        </a>
+
+        <a href="#">
+            <span class="ico">📧</span>
+            Newsletter
+        </a>
+
+        <div class="sidebar-label">Analytics</div>
+
+        <a href="#">
+            <span class="ico">📈</span>
+            Traffic
+        </a>
+
+        <a href="#">
+            <span class="ico">🔥</span>
+            Engagement
+        </a>
+
+        <a href="#">
+            <span class="ico">👨‍💻</span>
+            Authors
+        </a>
+    </aside>
+
+{% else %}
 <aside class="sidebar">
   <div class="sidebar-label">Main</div>
 
@@ -57,3 +121,4 @@
     </a>
   {% endif %}
 </aside>
+{% endif %}

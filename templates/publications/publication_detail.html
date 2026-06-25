@@ -73,7 +73,7 @@
           {% if article.status == 'published' %}✅{% else %}🟡{% endif %}
         </span>
         <div>
-          <a href="#" style="color:var(--blue);font-weight:500;text-decoration:none;">{{ article.title }}</a>
+          <a href="{% url 'articles:detail' article.slug %}" style="color:var(--blue);font-weight:500;text-decoration:none;">{{ article.title }}</a>
           <span style="color:var(--muted);font-size:.82rem;margin-left:.4rem;">
             by {{ article.author }} · {{ article.status|capfirst }} · {{ article.created_at|date:"M j, Y" }}
           </span>

@@ -1,0 +1,129 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="page-body">
+
+    <!-- Main -->
+    <main class="main-content">
+
+        <div class="section-title">
+            Articles Management
+        </div>
+        <div class="card-grid mb-4">
+            <div class="stat-card c1">
+                <div class="stat-label">Total Articles</div>
+                <div class="stat-value">{{ articles.count }}</div>
+            </div>
+
+            <div class="stat-card c2">
+                <div class="stat-label">Published</div>
+                <div class="stat-value">{{ published_articles }}</div>
+            </div>
+
+            <div class="stat-card c3">
+                <div class="stat-label">Drafts</div>
+                <div class="stat-value">{{ draft_articles }}</div>
+            </div>
+
+            <div class="stat-card c4">
+                <div class="stat-label">Reported</div>
+                <div class="stat-value">{{ reported_articles }}</div>
+            </div>
+        </div>
+        <!-- Search -->
+        <div class="toolbar">
+
+            <div class="search-box">
+                <span class="search-icon">🔍</span>
+                <input
+                    type="text"
+                    id="tableSearch"
+                    placeholder="Search Article ...">
+            </div>
+
+                <a href="#" class="btn btn-primary">+ Create Article</a>
+
+        </div>
+
+        <!-- Recent Articles -->
+        <div class="card">
+
+            <div class="section-title">
+                Recent Users
+            </div>
+
+            <div class="table-wrap">
+
+                <table style="text-align: center; vertical-align: middle;">
+
+                    <thead>
+                        <tr>
+                            <th>Article</th>
+                            <th style="text-align: center;">Author</th>
+                            <th style="text-align: center;">Status</th>
+                            <th style="text-align: center;">Views</th>
+                            <th style="text-align: center;">Likes</th>
+                            <th style="text-align: center;">Comments</th>
+                            <th style="text-align: center;">Reports</th>
+                            <th style="text-align: center;">Publications</th>
+                            <th style="text-align: center;">Date</th>
+                            <th style="text-align: center;">Action</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {% for article in articles %}
+                        <tr>
+                            <td style="display: flex; align-items: center;">
+                              {% if article.cover_image %}
+                                <img src="{{ article.cover_image.url }}" alt="{{ article.title }}"
+                                     style="width:25px;height:25px;border-radius:50%;object-fit:cover;border:1px solid var(--border);" />
+                              {% endif %}
+                              <span style="margin-left:8px;">{{ article.title }}</span><br/>
+                            </td>
+                            <td>{{ article.author.username }}</td>
+                            <td>
+                                {% if article.status == 'published' %}
+                                <strong class="badge badge-green">{{ article.status }}</strong>
+                                {% else %}
+                                <strong class="badge badge-yellow">{{ article.status }}</strong>
+                                {% endif %}
+                            </td>
+                            <td>👁 {{ article.views_count }}</td>
+                            <td>👏 {{ article.claps.count }}</td>
+                            <td>{{ article.comments.count }}</td>
+                            <td>
+                                {% if article.reports.count > 0 %}
+                                    <strong class="badge badge-red">{{ article.reports.count }}</strong>
+                                {% else %}
+                                    0
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if article.publication.name %}
+                                <strong class="badge badge-blue">{{ article.publication.name }}</strong>
+                                {% else %}
+                                -
+                                {% endif %}
+                            </td>
+                            <td>{{ article.created_at }}</td>
+                            <td><a href="{% url 'moderation:article_details' article.id %}">More</a></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+        <br>
+
+
+
+    </main>
+
+</div>
+
+{% endblock %}

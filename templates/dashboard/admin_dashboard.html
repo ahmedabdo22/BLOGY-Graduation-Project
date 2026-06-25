@@ -1,0 +1,171 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+
+<div class="page-body">
+
+    <!-- Sidebar -->
+
+
+    <!-- Main -->
+    <main class="main-content">
+
+        <div class="section-title">
+            BLOGY Admin Dashboard
+        </div>
+
+        <!-- Statistics -->
+        <div class="card-grid">
+
+            <div class="stat-card c1">
+                <div class="stat-icon">👥</div>
+                <div class="stat-label">Total Users</div>
+                <div class="stat-value">{{ total_users|default:"0" }}</div>
+                <div class="stat-delta up"></div>
+            </div>
+
+            <div class="stat-card c2">
+                <div class="stat-icon">📝</div>
+                <div class="stat-label">Articles</div>
+                <div class="stat-value">{{ total_articles|default:"0" }}</div>
+                <div class="stat-delta up"></div>
+            </div>
+
+            <div class="stat-card c3">
+                <div class="stat-icon">🏢</div>
+                <div class="stat-label">Publications</div>
+                <div class="stat-value">{{ total_publications|default:"0" }}</div>
+                <div class="stat-delta up"></div>
+            </div>
+
+            <div class="stat-card c4">
+                <div class="stat-icon">📧</div>
+                <div class="stat-label">Views</div>
+                <div class="stat-value">{{ total_views|default:"0" }}</div>
+                <div class="stat-delta up"></div>
+            </div>
+
+            <div class="stat-card c5">
+                <div class="stat-icon">🚩</div>
+                <div class="stat-label">Reports</div>
+                <div class="stat-value">{{ reports_count|default:"0" }}</div>
+                <div class="stat-delta dn"></div>
+            </div>
+
+            <div class="stat-card c6">
+                <div class="stat-icon">👏</div>
+                <div class="stat-label">Likes</div>
+                <div class="stat-value">{{ total_claps|default:"0" }}</div>
+                <div class="stat-delta up"></div>
+            </div>
+
+        </div>
+
+        <!-- Search -->
+        <div class="toolbar">
+
+            <div class="search-box">
+                <span class="search-icon">🔍</span>
+                <input
+                    type="text"
+                    id="tableSearch"
+                    placeholder="Search users, articles, publications...">
+            </div>
+
+                <a href="{% url 'publications:publication_create' %}" class="btn btn-primary"> ➕ Add Publication</a>
+
+        </div>
+
+        <!-- Recent Articles -->
+        <div class="card">
+
+            <div class="section-title">
+                Recent Articles
+            </div>
+
+            <div class="table-wrap">
+
+                <table>
+
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Publications</th>
+                            <th>Author</th>
+                            <th>Status</th>
+                            <th>Views</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {% for clap in claps %}
+                        <tr>
+                            <td>{{ clap.article__title }}</td>
+                            <td>{{ clap.article__publication__name|default:"Not Belong to Publication" }}</td>
+                            <td>{{ clap.user__username }}</td>
+                            <td>
+                                <span class="badge badge-green">
+                                    {{ clap.article__status }}
+                                </span>
+                            </td>
+                            <td>{{ clap.article__views_count }}</td>
+                            <td>
+                                <button class="btn btn-sm btn-secondary">
+                                    View
+                                </button>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+        <br>
+
+        <!-- System Overview -->
+        <div class="card">
+
+            <div class="section-title">
+                Platform Overview
+            </div>
+
+            <div class="card-grid">
+
+                <div>
+                    <h4>Top Author</h4>
+                    {% for x in top_author %}
+                    <p>{{ x.username }}</p><br>
+                    {% endfor %}
+                </div>
+
+                <div>
+                    <h4>Most Popular Publication</h4>
+                    <p>{{ top_publication|default:"NA" }}</p>
+                </div>
+
+                <div>
+                    <h4>Daily Visitors</h4>
+                    <p>{{ daily_visitors|default:"2,314" }}</p>
+                </div>
+
+                <div>
+                    <h4>Engagement Rate</h4>
+                    <p>{{ engagement_rate|default:"74%" }}</p>
+                </div>
+
+            </div>
+
+        </div>
+
+    </main>
+
+</div>
+
+
+{% endblock %}

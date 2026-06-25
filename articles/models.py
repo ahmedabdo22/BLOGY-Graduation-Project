@@ -5,6 +5,7 @@ from django.utils.text import slugify
 from categories.models import Category, Tag
 from publications.models import Publication
 
+
 class Article(models.Model):
     STATUS_CHOICES = (
         ("draft", "Draft"),

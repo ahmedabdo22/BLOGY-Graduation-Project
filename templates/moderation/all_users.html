@@ -1,0 +1,115 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+
+<div class="page-body">
+
+    <!-- Main -->
+    <main class="main-content">
+
+        <div class="section-title">
+            Users Management
+        </div>
+        <div class="card-grid mb-4">
+            <div class="stat-card c1">
+                <div class="stat-label">Total Users</div>
+                <div class="stat-value">{{ all_users.count }}</div>
+            </div>
+
+            <div class="stat-card c2">
+                <div class="stat-label">Published</div>
+                <div class="stat-value">1</div>
+            </div>
+
+            <div class="stat-card c3">
+                <div class="stat-label">Drafts</div>
+                <div class="stat-value">1</div>
+            </div>
+
+            <div class="stat-card c4">
+                <div class="stat-label">Reported</div>
+                <div class="stat-value">1</div>
+            </div>
+        </div>
+        <!-- Search -->
+        <div class="toolbar">
+
+            <div class="search-box">
+                <span class="search-icon">🔍</span>
+                <input
+                    type="text"
+                    id="tableSearch"
+                    placeholder="Search users ...">
+            </div>
+
+                <a href="{% url 'accounts:register' %}" class="btn btn-primary">+ Create User</a>
+
+        </div>
+
+        <!-- Recent Articles -->
+        <div class="card">
+
+            <div class="section-title">
+                Recent Users
+            </div>
+
+            <div class="table-wrap">
+
+                <table>
+
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Username</th>
+                            <th>Role</th>
+                            <th>Status</th>
+                            <th>Count Articles</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {% for alluser in all_users %}
+                        <tr>
+                            <td>{{ alluser.id }}</td>
+                            <td>{{ alluser.username }}</td>
+                            <td>{{ alluser.profile__role }}</td>
+                            <td>
+
+                                {% if alluser.is_active == 1 %}
+                                    <span class="badge badge-green">Active</span>
+                                {% else %}
+                                     <span class="badge badge-red">Deactivated</span>
+                                {% endif %}
+
+                            </td>
+                            <td>{{ alluser.article_count }}</td>
+                            <td>
+                                <button class="btn btn-sm btn-secondary">
+                                    <a href="{% url 'moderation:user_profile_detail' alluser.id %}">
+                                        View Profile
+                                    </a>
+                                </button>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+        <br>
+
+
+
+    </main>
+
+</div>
+
+<script src="{% static 'js/main.js' %}"></script>
+
+{% endblock %}

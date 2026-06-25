@@ -41,6 +41,7 @@ def publication_create(request):
     )
 
 @staff_member_required
+@role_required(["author", "admin"])
 def publication_delete(request, pk):
     # Only fetch publications that are not already deleted
     publication_object = get_object_or_404(Publication.objects.filter(delete_at__isnull=True),pk=pk)
@@ -55,6 +56,7 @@ def publication_delete(request, pk):
     )
 
 @staff_member_required
+@role_required(["author", "admin"])
 def publication_edit(request, pk):
     publication_object = get_object_or_404(Publication, pk=pk)
     users = User.objects.all()
@@ -79,6 +81,7 @@ def publication_edit(request, pk):
 
 
 @login_required
+@role_required(["author", "admin"])
 def publication_contributors(request, pk):
     publication = get_object_or_404(Publication, pk=pk)
 

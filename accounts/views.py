@@ -8,7 +8,7 @@ from django.contrib.auth import logout
 from django.shortcuts import redirect
 from django.contrib import messages
 from .models import Profile
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth.forms import AuthenticationForm
 from newsletters.models import NewsletterSubscription
 from interactions.models import Follow
 
@@ -19,7 +19,10 @@ def register_view(request):
             user = form.save()
             login(request, user)
             messages.success(request, "Account created successfully.")
-            return redirect("core:home")
+            if request.user.is_staff or request.user.is_superuser:
+                return redirect(request.META['HTTP_REFERER'])
+            else:
+                return redirect("core:home")
     else:
         form = RegisterForm()
     return render(request, "accounts/register.html", {"form": form})

@@ -1,0 +1,264 @@
+{% extends "base.html" %}
+{% load static %}
+
+
+{% block content %}
+
+<div class="main-content">
+
+    <!-- =========================
+         PROFILE HEADER
+    ========================== -->
+
+    <div class="card profile-header">
+
+        <div class="profile-avatar-area">
+
+            {% if profile.avatar %}
+                <img src="{{ profile.avatar.url }}"
+                     class="profile-avatar"
+                     alt="{{ profile_user.username }}">
+            {% else %}
+                <img src="{% static '/default-avatar.png' %}"
+                     class="profile-avatar"
+                     alt="{{ profile_user.username }}">
+            {% endif %}
+
+        </div>
+
+        <div class="profile-info-area">
+
+            <h1>
+                {{ profile_user.get_full_name|default:profile_user.username }}
+            </h1>
+
+            <div class="profile-username">
+                @{{ profile_user.username }}
+            </div>
+
+            <p class="profile-bio">
+                {{ profile.bio|default:"No bio available." }}
+            </p>
+
+            <div class="profile-meta">
+
+                <span>
+                    📅 Joined {{ date_joined|date:"M Y" }}
+                </span>
+
+                {% if last_login %}
+                <span>
+                    🕒 Last Login {{ last_login|date:"d M Y" }}
+                </span>
+                {% endif %}
+
+            </div>
+
+        </div>
+
+        <div class="profile-actions">
+
+            {% if is_active %}
+                <span class="badge badge-green">
+                    Active User
+                </span>
+            {% else %}
+                <span class="badge badge-red">
+                    Suspended
+                </span>
+            {% endif %}
+
+            <div class="big-number">
+                {{ articles_count }}
+            </div>
+
+            <div>
+                Total Articles
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- =========================
+         STATISTICS
+    ========================== -->
+
+    <div class="card-grid">
+
+        <div class="stat-card c1">
+            <div class="stat-label">Articles</div>
+            <div class="stat-value">{{ articles_count }}</div>
+            <div class="stat-icon">📝</div>
+        </div>
+
+        <div class="stat-card c2">
+            <div class="stat-label">Published</div>
+            <div class="stat-value">{{ published_count }}</div>
+            <div class="stat-icon">✅</div>
+        </div>
+
+        <div class="stat-card c3">
+            <div class="stat-label">Drafts</div>
+            <div class="stat-value">{{ draft_count }}</div>
+            <div class="stat-icon">📄</div>
+        </div>
+
+        <div class="stat-card c4">
+            <div class="stat-label">Views</div>
+            <div class="stat-value">{{ total_views }}</div>
+            <div class="stat-icon">👁</div>
+        </div>
+
+        <div class="stat-card c5">
+            <div class="stat-label">Claps</div>
+            <div class="stat-value">{{ total_claps }}</div>
+            <div class="stat-icon">👏</div>
+        </div>
+
+        <div class="stat-card c6">
+            <div class="stat-label">Reports</div>
+            <div class="stat-value">{{ total_reports }}</div>
+            <div class="stat-icon">🚩</div>
+        </div>
+
+    </div>
+
+    <!-- =========================
+         USER INFO
+    ========================== -->
+
+    <div class="card moderation-banner">
+
+        <div>
+            <h3>User Information</h3>
+
+            <p>
+                <strong>Email:</strong>
+                {{ profile_user.email }}
+            </p>
+        </div>
+
+        <div>
+
+            {% if is_active %}
+                <span class="badge badge-green">
+                    Account Active
+                </span>
+            {% else %}
+                <span class="badge badge-red">
+                    Account Suspended
+                </span>
+            {% endif %}
+
+        </div>
+
+    </div>
+
+    <!-- =========================
+         ARTICLES SECTION
+    ========================== -->
+
+    <div class="card">
+
+        <div class="section-title">
+            Recent Articles
+        </div>
+
+            <div class="table-wrap">
+
+                <table style="text-align: center; vertical-align: middle;">
+
+                    <thead>
+                        <tr>
+                            <th>Article</th>
+                            <th style="text-align: center;">Status</th>
+                            <th style="text-align: center;">Views</th>
+                            <th style="text-align: center;">Likes</th>
+                            <th style="text-align: center;">Comments</th>
+                            <th style="text-align: center;">Reports</th>
+                            <th style="text-align: center;">Publications</th>
+                            <th style="text-align: center;">Date</th>
+                            <th style="text-align: center;">Action</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {% for article in articles %}
+                        <tr>
+                            <td style="display: flex; align-items: center;">
+                              {% if article.cover_image %}
+                                <img src="{{ article.cover_image.url }}" alt="{{ article.title }}"
+                                     style="width:35px;height:35px;border-radius:50%;object-fit:cover;border:1px solid var(--border);" />
+                              {% endif %}
+                              <span style="margin-left:8px;">{{ article.title }}</span><br/>
+                            </td>
+                            <td>
+                                {% if article.status == 'published' %}
+                                <strong class="badge badge-green">{{ article.status }}</strong>
+                                {% else %}
+                                <strong class="badge badge-yellow">{{ article.status }}</strong>
+                                {% endif %}
+                            </td>
+                            <td>👁 {{ article.views_count }}</td>
+                            <td>👏 {{ article.claps.count }}</td>
+                            <td>{{ article.comments.count }}</td>
+                            <td>
+                                {% if article.reports.count > 0 %}
+                                    <strong class="badge badge-red">{{ article.reports.count }}</strong>
+                                {% else %}
+                                    0
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if article.publication.name %}
+                                <strong class="badge badge-blue">{{ article.publication.name }}</strong>
+                                {% else %}
+                                -
+                                {% endif %}
+                            </td>
+                            <td>{{ article.created_at }}</td>
+                            <td><a href="{% url 'moderation:article_details' article.id %}">More</a></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+
+                </table>
+
+            </div>
+
+
+
+
+    </div>
+
+
+    <div class="card moderation-banner">
+
+        <div>
+            <h3>Action</h3>
+
+            <p>
+                <strong>Email:</strong>
+                {{ profile_user.email }}
+            </p>
+        </div>
+
+        <div>
+
+            {% if is_active %}
+                <span class="badge badge-green">
+                    Account Active
+                </span>
+            {% else %}
+                <span class="badge badge-red">
+                    Account Suspended
+                </span>
+            {% endif %}
+
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}
